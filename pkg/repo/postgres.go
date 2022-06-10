@@ -3,6 +3,7 @@ package repo
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 )
 
 type Config struct {
@@ -16,15 +17,12 @@ type Config struct {
 }
 
 func NewDB(cfg Config) (*sqlx.DB, error) {
-	db, err := sqlx.Open(cfg.Driver, fmt.Sprintf("host=%s port=%s username=%s password=%s dbname=%s sslmode=%s",
-		cfg.Host, cfg.Port, cfg.Username, cfg.Password, cfg.DBName, cfg.SSLMode))
+	dsn := fmt.Sprintf("host=%s port=%s username=%s password=%s dbname=%s sslmode=%s",
+		cfg.Host, cfg.Port, cfg.Username, cfg.Password, cfg.DBName, cfg.SSLMode)
+	logrus.Info(dsn)
+	db, err := sqlx.Connect(cfg.Driver, dsn)
 	if err != nil {
 		return nil, fmt.Errorf("sqlx.Open: %w", err)
-	}
-
-	err = db.Ping()
-	if err != nil {
-		return nil, fmt.Errorf("db.Ping: %w", err)
 	}
 
 	return db, nil
