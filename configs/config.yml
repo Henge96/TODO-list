@@ -1,0 +1,8 @@
+port: "8000"
+db:
+  driver: "postgres"
+  host: "localhost"
+  port: "5436"
+  username: "postgres"
+  dbname: "postgres"
+  sslmode: "disable"
