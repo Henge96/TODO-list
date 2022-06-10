@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"os"
@@ -24,6 +25,7 @@ func main() {
 	}
 
 	db, err := repo.NewDB(repo.Config{
+		Driver:   viper.GetString("db.driver"),
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
 		Username: viper.GetString("db.username"),
